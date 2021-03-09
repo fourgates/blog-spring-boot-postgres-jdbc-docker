@@ -10,4 +10,23 @@ services:
     volumes:
       - "./src:/build/src"
       - "./target:/build/target:cached"
+    environment:
+       - POSTGRES_USER=docker
+       - POSTGRES_PASSWORD=docker
+       - POSTGRES_DB=docker         
     command: "mvn spring-boot:run"
+    depends_on:
+      - spring_dev_db    
+  spring_dev_db:
+    container_name: spring_dev_db
+    image: "postgres:12"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=docker
+    volumes:
+      - spring_dev_data:/var/lib/postgresql/data
+volumes:
+  spring_dev_data: {}        
